@@ -25,9 +25,8 @@ void Interface::handleWindowEvents() noexcept {
             }
         }
         else if (event.type == SDL_MOUSEMOTION) {
-            static glm::vec2 lastPos = glm::vec2(event.motion.x, event.motion.y);
-            mRotationDelta += glm::vec2((lastPos.y - event.motion.y), (event.motion.x - lastPos.x));
-            lastPos = glm::vec2(event.motion.x, event.motion.y);
+            mRotationDelta += glm::vec2((lastMousePos.y - event.motion.y), (event.motion.x - lastMousePos.x));
+            lastMousePos = glm::vec2(event.motion.x, event.motion.y);
         }
     }
 }

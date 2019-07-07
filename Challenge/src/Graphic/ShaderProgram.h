@@ -19,6 +19,7 @@ namespace gl {
         static void disuseCurrent() noexcept;
 
         void setUniform(const std::string& name, float value) noexcept;
+        void setUniform(const std::string& name, std::int32_t value) noexcept;
         void setUniform(const std::string& name, const glm::vec2& value) noexcept;
         void setUniform(const std::string& name, const glm::vec3&  value) noexcept;
         void setUniform(const std::string& name, const glm::vec4&  value) noexcept;

@@ -42,6 +42,6 @@ void gl::VertexArray::setAttribute(
 
 void gl::VertexArray::enableAttribute(std::uint32_t index) noexcept {
     bind();
-    glEnableVertexAttribArray(0);
+    glEnableVertexAttribArray(index);
     unbindCurrent();
 }

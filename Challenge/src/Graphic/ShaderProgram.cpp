@@ -79,6 +79,13 @@ void gl::ShaderProgram::setUniform(const std::string& name, float value) noexcep
     disuseCurrent();
 }
 
+void gl::ShaderProgram::setUniform(const std::string& name, std::int32_t value) noexcept
+{
+    use();
+    glUniform1iv(getUniformLocation(name), 1, &value);
+    disuseCurrent();
+}
+
 void gl::ShaderProgram::setUniform(const std::string& name, const glm::vec2& value) noexcept
 {
     use();

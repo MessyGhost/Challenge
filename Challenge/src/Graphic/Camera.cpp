@@ -32,7 +32,7 @@ void Camera::caculatePosition(const glm::vec3& delta) noexcept {
 
 void Camera::caculateRotation(const glm::vec2& delta) noexcept {
     mRotation += delta;
-    if (mRotation.x > glm::pi<float>() / 2.0f && mRotation.x < glm::pi<float>() / 2.0f) {
+    if (mRotation.x > glm::pi<float>() / 2.0f || mRotation.x < -glm::pi<float>() / 2.0f) {
         mRotation.x = (mRotation.x > 0 ? 1.0f : -1.0f) * glm::pi<float>() / 2.0f;
     }
     while (mRotation.y > glm::pi<float>() * 2.0f) {

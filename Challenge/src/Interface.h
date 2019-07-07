@@ -24,5 +24,6 @@ private:
     SDL_GLContext mContext;
     bool mShouldLeave;
     mutable glm::vec2 mRotationDelta;
+    glm::vec2 lastMousePos;
 };
 
