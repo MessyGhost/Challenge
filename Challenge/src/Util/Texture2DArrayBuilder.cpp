@@ -22,14 +22,22 @@ std::uint32_t Texture2DArrayBuilder::append(Image&& image) noexcept {
     return result;
 }
 
+#include <iostream>
 Image Texture2DArrayBuilder::scaleImage(const Image& image, std::uint32_t w, std::uint32_t h) noexcept {
-    std::uint8_t* resultData = new std::uint8_t[w * h];
+    std::uint8_t* resultData = new std::uint8_t[w * h * 4];
 
-    for (std::uint32_t x = 0; x < w; ++x) for (std::uint32_t y = 0; y < h; ++y) {
-        std::uint32_t 
-        srcX = std::round(x / w * (float)image.width()),
-        srcY = std::round(y / h * (float)image.height());
-        resultData[srcY * w + srcX] = image.data()[y * image.width() + x];
+    for (std::uint32_t dstY = 0; dstY < h; ++dstY){
+        std::uint32_t srcY = std::floor((dstY + 0.5f) / h * image.height());
+        srcY = srcY >= image.height() ? srcY - 1 : srcY;
+        for (std::uint32_t dstX = 0; dstX < w; ++dstX) {
+            std::uint32_t srcX = std::floor((dstX + 0.5f) / w * image.width());
+            srcX = srcX >= image.width() ? srcX - 1 : srcX;
+            std::cout << dstY * w + dstX << ": " << dstX << "," << dstY << " <- "
+                    << srcY * image.width() + srcX << ":" << srcX << "," << srcY <<std::endl;
+            for (int i = 0; i < 4; ++i) {
+                resultData[(dstY * w + dstX) * 4 + i] = image.data()[(srcY * image.width() + srcX) * 4 + i];
+            }
+        }
     }
     
     return Image(w, h, resultData, 
