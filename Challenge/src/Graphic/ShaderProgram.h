@@ -1,6 +1,7 @@
 #pragma once
 #include <glm/glm.hpp>
 #include <string>
+#include <cstdint>
 #include "../Util/Noncopyable.h"
 #include "../Util/Nonmovable.h"
 
@@ -23,8 +24,8 @@ namespace gl {
         void setUniform(const std::string& name, const glm::vec4&  value) noexcept;
         void setUniform(const std::string& name, const glm::mat4&  value) noexcept;
     private:
-        unsigned int mProgram;
-        unsigned int getUniformLocation(const std::string& name) const noexcept;
+        std::uint32_t mProgram;
+        std::uint32_t getUniformLocation(const std::string& name) const noexcept;
     };
 
     ShaderProgram loadShaderProgramFromFile(

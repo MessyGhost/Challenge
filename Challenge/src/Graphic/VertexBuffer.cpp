@@ -1,6 +1,6 @@
 #include "VertexBuffer.h"
 
-gl::VertexBuffer::VertexBuffer(unsigned long size, gl::BufferUsage usage, const void* data) noexcept
+gl::VertexBuffer::VertexBuffer(std::uint32_t size, gl::BufferUsage usage, const void* data) noexcept
     :mSize(size)
 {
     glGenBuffers(1, &mVBO);
@@ -19,11 +19,11 @@ gl::VertexBuffer::~VertexBuffer() noexcept {
     glDeleteBuffers(1, &mVBO);
 }
 
-unsigned long gl::VertexBuffer::size() const noexcept {
+std::uint32_t gl::VertexBuffer::size() const noexcept {
     return mSize;
 }
 
-void gl::VertexBuffer::subData(unsigned long size, const void* data, unsigned long offset) noexcept {
+void gl::VertexBuffer::subData(std::uint32_t size, const void* data, std::uint32_t offset) noexcept {
     bind(gl::BufferBindingTarget::ArrayBuffer);
     glBufferSubData(GL_ARRAY_BUFFER, offset, size, data);
     clearTargetBinding(gl::BufferBindingTarget::ArrayBuffer);

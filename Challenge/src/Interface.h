@@ -2,6 +2,7 @@
 #include "Util/Nonmovable.h"
 #include "Util/Noncopyable.h"
 #include <SDL.h>
+#include <glm/glm.hpp>
 #undef main
 
 class Interface 
@@ -12,6 +13,7 @@ public:
     void swapWindow() noexcept;
     void handleWindowEvents() noexcept;
     bool shouldLeave() const noexcept;
+    glm::vec2 getRotationDelta() const noexcept;
 
     static constexpr int
         OPENGL_VERSION_MAJOR = 3,
@@ -21,5 +23,6 @@ private:
     SDL_Window* mWindow;
     SDL_GLContext mContext;
     bool mShouldLeave;
+    mutable glm::vec2 mRotationDelta;
 };
 

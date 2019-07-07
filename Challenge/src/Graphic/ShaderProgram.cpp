@@ -9,14 +9,14 @@
 gl::ShaderProgram::ShaderProgram(const char* szCodeOfVertShader, const char* szCodeOfFragShader) 
     :mProgram(glCreateProgram())
 {
-    std::unique_ptr<unsigned int, std::function<void(unsigned int*)>>
-        pVertexShader(new unsigned int(glCreateShader(GL_VERTEX_SHADER)),
-                        [](unsigned int * data) {
+    std::unique_ptr<std::uint32_t, std::function<void(std::uint32_t*)>>
+        pVertexShader(new std::uint32_t(glCreateShader(GL_VERTEX_SHADER)),
+                        [](std::uint32_t * data) {
                             glDeleteShader(*data);
                             delete data;
                         }),
-        pFragmentShader(new unsigned int(glCreateShader(GL_FRAGMENT_SHADER)),
-                        [](unsigned int* data) {
+        pFragmentShader(new std::uint32_t(glCreateShader(GL_FRAGMENT_SHADER)),
+                        [](std::uint32_t* data) {
                             glDeleteShader(*data);
                             delete data;
                         });
@@ -107,7 +107,7 @@ void gl::ShaderProgram::setUniform(const std::string& name, const glm::mat4& val
     disuseCurrent();
 }
 
-unsigned int gl::ShaderProgram::getUniformLocation(const std::string& name) const noexcept {
+std::uint32_t gl::ShaderProgram::getUniformLocation(const std::string& name) const noexcept {
     return glGetUniformLocation(mProgram, name.c_str());
 }
 

@@ -24,11 +24,11 @@ void gl::VertexArray::unbindCurrent() noexcept {
 
 void gl::VertexArray::setAttribute(
             const VertexBuffer& buffer,
-            unsigned int index,
-            unsigned int size,
+            std::uint32_t index,
+            std::int32_t size,
             DataType type,
             bool normalized,
-            unsigned int stride,
+            std::uint32_t stride,
             const void* offset
         ) noexcept
 {
@@ -40,7 +40,7 @@ void gl::VertexArray::setAttribute(
     unbindCurrent();
 }
 
-void gl::VertexArray::enableAttribute(unsigned int index) noexcept {
+void gl::VertexArray::enableAttribute(std::uint32_t index) noexcept {
     bind();
     glEnableVertexAttribArray(0);
     unbindCurrent();

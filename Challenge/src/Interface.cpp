@@ -15,8 +15,19 @@ void Interface::swapWindow() noexcept {
 void Interface::handleWindowEvents() noexcept {
     SDL_Event event;
     while (SDL_PollEvent(&event) > 0) {
-        if (event.type == SDL_WINDOWEVENT && event.window.event == SDL_WINDOWEVENT_CLOSE) {
-            mShouldLeave = true;
+        if (event.type == SDL_WINDOWEVENT) {
+            switch(event.window.event) {
+            case SDL_WINDOWEVENT_CLOSE:
+            {
+                mShouldLeave = true;
+                break;
+            }
+            }
+        }
+        else if (event.type == SDL_MOUSEMOTION) {
+            static glm::vec2 lastPos = glm::vec2(event.motion.x, event.motion.y);
+            mRotationDelta += glm::vec2((lastPos.y - event.motion.y), (event.motion.x - lastPos.x));
+            lastPos = glm::vec2(event.motion.x, event.motion.y);
         }
     }
 }
@@ -26,11 +37,13 @@ bool Interface::shouldLeave() const noexcept {
 }
 
 Interface::Interface() 
-    :mShouldLeave(false)
+    :mShouldLeave(false), mRotationDelta(0.0f, 0.0f)
 {
     SDL_GL_SetAttribute(SDL_GL_CONTEXT_MAJOR_VERSION, OPENGL_VERSION_MAJOR);
     SDL_GL_SetAttribute(SDL_GL_CONTEXT_MINOR_VERSION, OPENGL_VERSION_MINOR);
     SDL_GL_SetAttribute(SDL_GL_CONTEXT_PROFILE_MASK, SDL_GL_CONTEXT_PROFILE_CORE);
+    SDL_GL_SetAttribute(SDL_GL_DOUBLEBUFFER, SDL_TRUE);
+    SDL_GL_SetAttribute(SDL_GL_DEPTH_SIZE, 24);
 
     if (SDL_Init(SDL_INIT_EVERYTHING) != 0) {
         throw std::runtime_error("Cannot init SDL.");
@@ -48,4 +61,10 @@ Interface::Interface()
     if (glewInit() != GLEW_OK) {
         throw std::runtime_error("Cannot init OpenGL(GLEW).");
     }
+}
+
+glm::vec2 Interface::getRotationDelta() const noexcept {
+    glm::vec2 result = mRotationDelta;
+    mRotationDelta.x = mRotationDelta.y = 0.0f;
+    return result;
 }

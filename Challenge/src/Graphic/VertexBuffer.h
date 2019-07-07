@@ -4,6 +4,7 @@
 #include <initializer_list>
 #include <vector>
 #include <utility>
+#include <cstdint>
 
 namespace gl {
     enum class BufferUsage : GLenum {
@@ -32,17 +33,17 @@ namespace gl {
         :private Noncopyable
     {
     public:
-        VertexBuffer(unsigned long size, BufferUsage usage, const void* data = (void*)0) noexcept;
+        VertexBuffer(std::uint32_t size, BufferUsage usage, const void* data = (void*)0) noexcept;
         VertexBuffer(VertexBuffer&& rhs) noexcept;
         VertexBuffer& operator=(VertexBuffer&&) = delete;
         ~VertexBuffer() noexcept;
 
-        unsigned long size() const noexcept;
-        void subData(unsigned long size, const void* data, unsigned long offset = 0) noexcept;
+        std::uint32_t size() const noexcept;
+        void subData(std::uint32_t, const void* data, std::uint32_t offset = 0) noexcept;
     private:
         friend class VertexArray;
-        unsigned int mVBO;
-        unsigned long mSize;
+        std::uint32_t mVBO;
+        std::uint32_t mSize;
         void bind(BufferBindingTarget target) const noexcept;
         static void clearTargetBinding(BufferBindingTarget target) noexcept;
     };

@@ -1,5 +1,6 @@
 #pragma once
 #include "VertexBuffer.h"
+#include <cstdint>
 
 namespace gl {
     class VertexArray 
@@ -15,15 +16,15 @@ namespace gl {
         static void unbindCurrent() noexcept;
         void setAttribute(
             const VertexBuffer& buffer,
-            unsigned int index,
-            unsigned int size,
+            std::uint32_t index,
+            std::int32_t size,
             DataType type,
             bool normalized = false,
-            unsigned int stride = 0,
+            std::uint32_t stride = 0,
             const void* offset = (void*)0
         ) noexcept;
-        void enableAttribute(unsigned int index) noexcept;
+        void enableAttribute(std::uint32_t index) noexcept;
     private:
-        unsigned int mVAO;
+        std::uint32_t mVAO;
     };
 }
