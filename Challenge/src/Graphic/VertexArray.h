@@ -21,7 +21,7 @@ namespace gl {
             DataType type,
             bool normalized = false,
             std::uint32_t stride = 0,
-            const void* offset = (void*)0
+            std::uint64_t offset = 0
         ) noexcept;
         void enableAttribute(std::uint32_t index) noexcept;
     private:

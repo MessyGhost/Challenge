@@ -29,13 +29,13 @@ void gl::VertexArray::setAttribute(
             DataType type,
             bool normalized,
             std::uint32_t stride,
-            const void* offset
+            std::uint64_t offset
         ) noexcept
 {
     bind();
     buffer.bind(gl::BufferBindingTarget::ArrayBuffer);
     glVertexAttribPointer(index, size, static_cast<GLenum>(type), 
-                normalized ? GL_TRUE : GL_FALSE, stride, offset);
+                normalized ? GL_TRUE : GL_FALSE, stride, (void*)offset);
     VertexBuffer::clearTargetBinding(gl::BufferBindingTarget::ArrayBuffer);
     unbindCurrent();
 }

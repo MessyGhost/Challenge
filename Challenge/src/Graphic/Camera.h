@@ -8,8 +8,8 @@ public:
     void setRotation(const glm::vec2& rotation) noexcept;
     const glm::vec3& getPosition() const noexcept;
     const glm::vec2& getRotation() const noexcept;
-    void caculatePosition(const glm::vec3& delta) noexcept;
-    void caculateRotation(const glm::vec2& delta) noexcept;
+    void calculatePosition(const glm::vec3& delta) noexcept;
+    void calculateRotation(const glm::vec2& delta) noexcept;
 
     const glm::mat4& getModelViewMatrix() const noexcept;
     const glm::mat4& getProjectionMatrix() const noexcept;

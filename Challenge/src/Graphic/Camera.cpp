@@ -25,21 +25,24 @@ const glm::vec2& Camera::getRotation() const noexcept {
     return mRotation;
 }
 
-void Camera::caculatePosition(const glm::vec3& delta) noexcept {
+void Camera::calculatePosition(const glm::vec3& delta) noexcept {
     mPosition += delta;
     mContentHasBeenChanged = true;
 }
 
-void Camera::caculateRotation(const glm::vec2& delta) noexcept {
+void Camera::calculateRotation(const glm::vec2& delta) noexcept {
     mRotation += delta;
-    if (mRotation.x > glm::pi<float>() / 2.0f || mRotation.x < -glm::pi<float>() / 2.0f) {
-        mRotation.x = (mRotation.x > 0 ? 1.0f : -1.0f) * glm::pi<float>() / 2.0f;
+    if (mRotation.x > glm::radians(89.999f)) {
+        mRotation.x = glm::radians(89.999f);
+    }
+    else if(mRotation.x < -glm::radians(89.999f)) {
+        mRotation.x = -glm::radians(89.999f);
     }
     while (mRotation.y > glm::pi<float>() * 2.0f) {
         mRotation.y -= glm::pi<float>() * 2.0f;
     }
     while (mRotation.y < 0.0f) {
-        mRotation.y += glm::pi<float>();
+        mRotation.y += glm::pi<float>() * 2.0f;
     }
     mContentHasBeenChanged = true;
 }
@@ -53,7 +56,7 @@ const glm::mat4& Camera::getProjectionMatrix() const noexcept {
 }
 
 void Camera::setProjectionInfo(float fov, float aspect, float viewDistance) noexcept {
-    mProjectionMatrix = glm::perspective(fov, aspect, 0.0f, viewDistance);
+    mProjectionMatrix = glm::perspective(fov, aspect, 0.1f, viewDistance);
 }
 
 void Camera::calculateModelViewMatrix() const noexcept {

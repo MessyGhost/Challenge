@@ -14,7 +14,13 @@ public:
     void handleWindowEvents() noexcept;
     bool shouldLeave() const noexcept;
     glm::vec2 getRotationDelta() const noexcept;
-
+    struct MoveIntent {
+        float distanceOnPlane;
+        float yaw;
+        float deltaOnVertical;
+    };
+    void getMoveIntent(MoveIntent& moveIntent) const noexcept;
+    void setMouseVisible(bool visible) noexcept;
     static constexpr int
         OPENGL_VERSION_MAJOR = 3,
         OPENGL_VERSION_MINOR = 3;
@@ -23,7 +29,7 @@ private:
     SDL_Window* mWindow;
     SDL_GLContext mContext;
     bool mShouldLeave;
+    bool mHasFocus;
     mutable glm::vec2 mRotationDelta;
-    glm::vec2 lastMousePos;
 };
 

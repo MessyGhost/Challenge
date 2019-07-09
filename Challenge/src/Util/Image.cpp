@@ -3,7 +3,7 @@
 #include <stdexcept>
 
 Image::~Image() noexcept {
-    if (mData == nullptr)mDeleter(mData);
+    if (mData != nullptr)mDeleter(mData);
 }
 
 Image::Image(std::uint32_t width, std::uint32_t height, std::uint8_t* data, 

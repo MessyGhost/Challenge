@@ -1,5 +1,6 @@
 #pragma once
 #include <GL/glew.h>
+#include <cstdint>
 
 namespace gl {
     enum class DataType {
@@ -15,4 +16,12 @@ namespace gl {
         Long = GL_INT64_ARB,
         UnsignedLong = GL_UNSIGNED_INT64_ARB
     };
+
+    enum class Cap : GLenum {
+        DepthTest = GL_DEPTH_TEST
+    }; 
+
+    inline void enable(Cap cap) noexcept {
+        glEnable(static_cast<GLenum>(cap));
+    }
 }

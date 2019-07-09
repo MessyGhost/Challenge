@@ -7,6 +7,7 @@ namespace gl {
     //TODO: fill it.
     enum class BufferType {
         ColorBuffer = GL_COLOR,
+        DepthBuffer = GL_DEPTH
     };
 
     class Framebuffer
