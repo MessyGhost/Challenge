@@ -37,7 +37,7 @@ Image Texture2DArrayBuilder::scaleImage(const Image& image, std::uint32_t w, std
     
     return Image(w, h, resultData, 
         [](std::uint8_t* data) noexcept {
-            delete data;
+            delete[] data;
         });
 }
 
@@ -52,6 +52,6 @@ Image Texture2DArrayBuilder::flipImage(const Image& image) {
     }
     return Image(image.width(), image.height(), resultData,
         [](std::uint8_t* data){
-            delete data;
+            delete[] data;
         });
 }
