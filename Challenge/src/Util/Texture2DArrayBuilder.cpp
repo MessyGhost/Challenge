@@ -1,12 +1,17 @@
 #include "Texture2DArrayBuilder.h"
 #include "Image.h"
+#include "LoggerDefinition.h"
 #include <cmath>
+#include <stdexcept>
 
 gl::Texture Texture2DArrayBuilder::build(std::uint32_t width, std::uint32_t height) const {
     gl::Texture result(gl::TextureBindingTarget::Texture2DArray, width, height, mImages.size());
     int i = 0;
     for (const Image& image : mImages) {
         if (image.width() != width && image.height() != height) {
+            warningstream << "An image\'s size isn\'tt match.\n" 
+                 << "It should be: (" << width <<','<< height <<")\n"
+                 << "But now it\'s ( " << image.width() <<',' << image.height() << ") .";
             result.subData(0, 0, i++, width, height, 1, flipImage(scaleImage(image, width, height)).data());
         }
         else {
@@ -36,7 +41,7 @@ Image Texture2DArrayBuilder::scaleImage(const Image& image, std::uint32_t w, std
     }
     
     return Image(w, h, resultData, 
-        [](std::uint8_t* data) noexcept {
+        [](std::uint8_t* data) {
             delete[] data;
         });
 }
@@ -51,7 +56,7 @@ Image Texture2DArrayBuilder::flipImage(const Image& image) {
         }
     }
     return Image(image.width(), image.height(), resultData,
-        [](std::uint8_t* data){
+        [](std::uint8_t* data) {
             delete[] data;
         });
 }

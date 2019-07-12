@@ -2,19 +2,19 @@
 #include <SOIL.h>
 #include <stdexcept>
 
-Image::~Image() noexcept {
+Image::~Image() {
     if (mData != nullptr)mDeleter(mData);
 }
 
 Image::Image(std::uint32_t width, std::uint32_t height, std::uint8_t* data, 
-    std::function<void(std::uint8_t*) noexcept> deleter) noexcept
+    std::function<void(std::uint8_t*)> deleter) noexcept
 	:mData(data), mWidth(width), mHeight(height), mDeleter(deleter)
 {
 	
 }
 
 Image::Image(Image&& rhs) noexcept
-    :mData(rhs.mData), mWidth(rhs.mWidth), mHeight(rhs.mHeight)
+    :mData(rhs.mData), mWidth(rhs.mWidth), mHeight(rhs.mHeight), mDeleter(rhs.mDeleter)
 {
     rhs.mData = nullptr;
 }
@@ -39,7 +39,7 @@ Image Image::fromFile(const std::string& filename) {
         throw std::runtime_error(std::string("Cannot load image from file.\nFilename: ") + filename.c_str());
     }
     return Image(width, height, pixels, 
-        [](std::uint8_t *data) noexcept {
+        [](std::uint8_t *data) {
             SOIL_free_image_data(data);
         });
 }

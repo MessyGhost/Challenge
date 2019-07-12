@@ -21,6 +21,7 @@ public:
     };
     void getMoveIntent(MoveIntent& moveIntent) const noexcept;
     void setMouseVisible(bool visible) noexcept;
+    void present() noexcept;
     static constexpr int
         OPENGL_VERSION_MAJOR = 3,
         OPENGL_VERSION_MINOR = 3;

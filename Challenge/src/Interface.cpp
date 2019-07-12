@@ -1,4 +1,5 @@
 #include "Interface.h"
+#include "Util/LoggerDefinition.h"
 #include <stdexcept>
 #include <GL/glew.h>
 #include <SDL_net.h>
@@ -70,6 +71,7 @@ bool Interface::shouldLeave() const noexcept {
 Interface::Interface() 
     :mShouldLeave(false), mRotationDelta(0.0f, 0.0f), mHasFocus(false)
 {
+    debugstream << "An instance of Interface was created.";
     SDL_GL_SetAttribute(SDL_GL_CONTEXT_MAJOR_VERSION, OPENGL_VERSION_MAJOR);
     SDL_GL_SetAttribute(SDL_GL_CONTEXT_MINOR_VERSION, OPENGL_VERSION_MINOR);
     SDL_GL_SetAttribute(SDL_GL_CONTEXT_PROFILE_MASK, SDL_GL_CONTEXT_PROFILE_CORE);
@@ -84,7 +86,7 @@ Interface::Interface()
     }
 
     mWindow = SDL_CreateWindow("Challenge", SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED, 
-                    800, 600, SDL_WINDOW_SHOWN | SDL_WINDOW_OPENGL);
+                    800, 600, SDL_WINDOW_HIDDEN | SDL_WINDOW_OPENGL);
 
     mContext = SDL_GL_CreateContext(mWindow);
     SDL_GL_MakeCurrent(mWindow, mContext);
@@ -92,6 +94,10 @@ Interface::Interface()
     if (glewInit() != GLEW_OK) {
         throw std::runtime_error("Cannot init OpenGL(GLEW).");
     }
+
+    infostream << "OpenGL initialized successfully.\n" 
+               << "GL_VERSION: " << glGetString(GL_VERSION) << '.';
+    infostream << "But working on OpenGL " << OPENGL_VERSION_MAJOR <<'.'<< OPENGL_VERSION_MINOR;
 }
 
 glm::vec2 Interface::getRotationDelta() const noexcept {
@@ -150,4 +156,8 @@ void Interface::getMoveIntent(MoveIntent& intent) const noexcept {
 
 void Interface::setMouseVisible(bool visible) noexcept {
     SDL_SetRelativeMouseMode(visible ? SDL_FALSE : SDL_TRUE);
+}
+
+void Interface::present() noexcept {
+    SDL_ShowWindow(mWindow);
 }

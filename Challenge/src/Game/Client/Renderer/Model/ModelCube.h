@@ -1,9 +1,9 @@
 #pragma once
-#include "../BlockModel.h"
+#include "../StaticBlockModel.h"
 #include <cstdint>
 
 class ModelCube 
-    :public BlockModel
+    :public StaticBlockModel
 {
 public:
     /*Input: Indices of texture array. */

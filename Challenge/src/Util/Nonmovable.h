@@ -1,10 +1,9 @@
 #pragma once
 
 class Nonmovable {
-public:
+protected:
     Nonmovable() = default;
+    ~Nonmovable() = default;
     Nonmovable(Nonmovable&&) = delete;
     Nonmovable& operator=(Nonmovable&&) = delete;
-    Nonmovable(const Nonmovable&) = default;
-    Nonmovable& operator=(const Nonmovable&) = default;
 };

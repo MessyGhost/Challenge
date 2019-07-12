@@ -6,22 +6,28 @@
 #include "../Graphic/Camera.h"
 #include "../Util/Texture2DArrayBuilder.h"
 #include "../Util/Image.h"
-#include "Renderer/Model/ModelCube.h"
+#include "Client/Renderer/Model/ModelCube.h"
+#include "../Util/LoggerDefinition.h"
+#include "Client/Renderer/WorldRenderer.h"
 #include <iostream>
 #include <glm/gtc/matrix_transform.hpp>
 
-Game::Game() noexcept {
+Game::Game(const GameResource& gamerc) noexcept 
+    :mGameResource(gamerc)
+{
 }
 
 void Game::run() {
+    infostream << "Game::run() was called, an client will be launched soon...";
     auto &interface = Interface::getInterface();
+    interface.present();
     interface.setMouseVisible(false);
     gl::enable(gl::Cap::DepthTest);
     gl::Framebuffer& screen = gl::Framebuffer::SCREEN;
     float clearColor[] = {0.1f, 0.2f, 0.3f, 1.0f};
     float clearDepth = 1.0f;
 
-    Texture2DArrayBuilder tb;
+    /*Texture2DArrayBuilder tb;
     std::uint32_t 
         side = tb.append(Image::fromFile("resource/image/grass_side.png")),
         top = tb.append(Image::fromFile("resource/image/grass_top.png")),
@@ -42,7 +48,7 @@ void Game::run() {
     va.setAttribute(vb, 1, 3, gl::DataType::Float, false, 6 * sizeof(float), 3 * sizeof(float));
     va.enableAttribute(0);
     va.enableAttribute(1);
-    va.bind();
+    va.bind();*/
 
     Camera cmr(glm::vec3(0.0f, 0.0f, 0.0f), glm::vec2(0.0f, 0.0f));
     cmr.setProjectionInfo(glm::radians(45.0f), 800.0f / 600.0f, 100.0f);
@@ -51,8 +57,17 @@ void Game::run() {
     s.setUniform("ProjectionMatrix", cmr.getProjectionMatrix());
     Interface::MoveIntent moveIntent;
 
-    cmr.setPosition(glm::vec3(3.0f, 3.0f, 3.0f));
+    cmr.setPosition(glm::vec3(0.0f, 0.0f, 0.0f));
     cmr.setRotation(glm::radians(glm::vec2(-45.0f ,225.0f)));
+
+    Chunk::BlockData blocks;
+	blocks.fill(0);
+    ChunkCache cc;
+    cc.put(ChunkCache::ChunkPos{1, 0, 0}, Chunk(blocks));
+    cc.getChunk(ChunkCache::ChunkPos{1, 0, 0}).setBlock(Chunk::BlockPos{0, 0, 0}, 1);
+    cc.put(ChunkCache::ChunkPos{0, 0, 0}, Chunk(blocks));
+    cc.getChunk(ChunkCache::ChunkPos{0, 0, 0}).setBlock(Chunk::BlockPos{0, 0, 0}, 1);
+    WorldRenderer wr(cc, mGameResource.getClientResource().mBlockModelManager);
     while (!interface.shouldLeave())
     {
         interface.handleWindowEvents();
@@ -72,11 +87,11 @@ void Game::run() {
         s.setUniform("ModelViewMatrix", cmr.getModelViewMatrix());
         s.use();
         
-        textures.bind();
+        mGameResource.getClientResource().mBlockTexture.bind();
 
         screen.clearBuffer(gl::BufferType::ColorBuffer, clearColor);
         screen.clearBuffer(gl::BufferType::DepthBuffer, &clearDepth);
-        glDrawArrays(GL_TRIANGLES, 0, vertices.size());
+        wr.render(pos, 2);
         interface.swapWindow();
     }
 }
