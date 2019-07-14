@@ -1,7 +1,6 @@
 ﻿binaries
 includes
 libraries
-Challenge/run/challenge.exe
 *.ilk
 *.obj
 *.pdb
