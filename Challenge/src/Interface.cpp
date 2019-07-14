@@ -97,52 +97,57 @@ Interface::Interface()
 
     infostream << "OpenGL initialized successfully.\n" 
                << "GL_VERSION: " << glGetString(GL_VERSION) << '.';
-    infostream << "But working on OpenGL " << OPENGL_VERSION_MAJOR <<'.'<< OPENGL_VERSION_MINOR;
+    infostream << "But working on OpenGL " << OPENGL_VERSION_MAJOR <<'.'<< OPENGL_VERSION_MINOR << '.';
 }
 
-glm::vec2 Interface::getRotationDelta() const noexcept {
-    glm::vec2 result = mRotationDelta;
+glm::dvec2 Interface::getRotationDelta() const noexcept {
+    glm::dvec2 result = mRotationDelta;
     mRotationDelta.x = mRotationDelta.y = 0.0f;
     return result;
 }
 
 void Interface::getMoveIntent(MoveIntent& intent) const noexcept {
     if(SDL_GetKeyboardFocus() == mWindow) {
-        
-        bool firstCase = true;
-        auto rotate = [&](float radians) {
-            if(firstCase) {
-                firstCase = false;
-                intent.yaw = radians;
-            }
-            else
-            {
-                intent.yaw = glm::mix(intent.yaw, radians, 0.5);
-            }
-        };
-        intent.distanceOnPlane = intent.deltaOnVertical = 0.0f;
+        intent.distanceOnPlane = intent.deltaOnVertical = 0.0;
         const std::uint8_t* keys = SDL_GetKeyboardState(NULL);
         if(keys[SDL_SCANCODE_W] && !keys[SDL_SCANCODE_S]) {
-            rotate(0.0f);
-            intent.distanceOnPlane = 1.0f;
+            intent.distanceOnPlane = 1.0;
+            if(keys[SDL_SCANCODE_A]) {
+                intent.yaw = glm::pi<double>() * 1.75;
+            }
+            else if(keys[SDL_SCANCODE_D]) {
+                intent.yaw = glm::pi<double>() * 0.25;
+            }
+            else {
+                intent.yaw = 0.0;
+            }
         }
-        if(keys[SDL_SCANCODE_A] && !keys[SDL_SCANCODE_D]) {
-            rotate(glm::pi<float>() * 1.5f);
-            intent.distanceOnPlane = 1.0f;
+        else if (keys[SDL_SCANCODE_S] && !keys[SDL_SCANCODE_W]) {
+            intent.distanceOnPlane = 1.0;
+            if(keys[SDL_SCANCODE_A]) {
+                intent.yaw = glm::pi<double>() * 1.25;
+            }
+            else if(keys[SDL_SCANCODE_D]) {
+                intent.yaw = glm::pi<double>() * 0.75;
+            }
+            else {
+                intent.yaw = glm::pi<double>();
+            }
         }
-        if(keys[SDL_SCANCODE_S] && !keys[SDL_SCANCODE_A]) {
-            rotate(glm::pi<float>());
-            intent.distanceOnPlane = 1.0f;
+        else if (keys[SDL_SCANCODE_A] && !keys[SDL_SCANCODE_D]) {
+            intent.distanceOnPlane = 1.0;
+            intent.yaw = glm::pi<double>() * 1.5;
         }
-        if(keys[SDL_SCANCODE_D] && !keys[SDL_SCANCODE_A]) {
-            rotate(glm::pi<float>() * 0.5f);
-            intent.distanceOnPlane = 1.0f;
+        else if (keys[SDL_SCANCODE_D] && !keys[SDL_SCANCODE_A]) {
+            intent.distanceOnPlane = 1.0;
+            intent.yaw = glm::half_pi<double>();
         }
-        if(keys[SDL_SCANCODE_SPACE]) {
-            intent.deltaOnVertical += 1.0f;
+
+        if(keys[SDL_SCANCODE_SPACE] && !(keys[SDL_SCANCODE_LSHIFT] || keys[SDL_SCANCODE_RSHIFT])) {
+            intent.deltaOnVertical = 1.0;
         }
-        if(keys[SDL_SCANCODE_LSHIFT]) {
-            intent.deltaOnVertical -= 1.0f;
+        else if((keys[SDL_SCANCODE_LSHIFT] || keys[SDL_SCANCODE_RSHIFT]) && !keys[SDL_SCANCODE_SPACE]) {
+            intent.deltaOnVertical = -1.0;
         }
         return;
     }

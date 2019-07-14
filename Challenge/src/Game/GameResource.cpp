@@ -38,7 +38,7 @@ void GameResource::load(GameResource::Side side) {
 }
 
 void GameResource::appendProvider(std::unique_ptr<GameContentProvider>&& provider) noexcept {
-    mProviders.push_back(std::move(provider));
+    mProviders.emplace_back(std::move(provider));
 }
 
 const GameResource::CommonResource& GameResource::getCommonResource() const noexcept {

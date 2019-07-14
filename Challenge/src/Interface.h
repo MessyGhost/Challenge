@@ -13,11 +13,11 @@ public:
     void swapWindow() noexcept;
     void handleWindowEvents() noexcept;
     bool shouldLeave() const noexcept;
-    glm::vec2 getRotationDelta() const noexcept;
+    glm::dvec2 getRotationDelta() const noexcept;
     struct MoveIntent {
-        float distanceOnPlane;
-        float yaw;
-        float deltaOnVertical;
+        double distanceOnPlane;
+        double yaw;
+        double deltaOnVertical;
     };
     void getMoveIntent(MoveIntent& moveIntent) const noexcept;
     void setMouseVisible(bool visible) noexcept;
@@ -31,6 +31,6 @@ private:
     SDL_GLContext mContext;
     bool mShouldLeave;
     bool mHasFocus;
-    mutable glm::vec2 mRotationDelta;
+    mutable glm::dvec2 mRotationDelta;
 };
 

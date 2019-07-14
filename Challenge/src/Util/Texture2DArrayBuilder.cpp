@@ -23,7 +23,7 @@ gl::Texture Texture2DArrayBuilder::build(std::uint32_t width, std::uint32_t heig
 
 std::uint32_t Texture2DArrayBuilder::append(Image&& image) noexcept {
     std::uint32_t result = mImages.size();
-    mImages.push_back(std::move(image));
+    mImages.emplace_back(std::move(image));
     return result;
 }
 

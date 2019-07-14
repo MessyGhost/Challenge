@@ -39,7 +39,7 @@ namespace gl {
         ~VertexBuffer() noexcept;
 
         std::uint32_t size() const noexcept;
-        void subData(std::uint32_t, const void* data, std::uint32_t offset = 0) noexcept;
+        void subData(std::uint32_t size, const void* data, std::uint32_t offset = 0) noexcept;
     private:
         friend class VertexArray;
         std::uint32_t mVBO;

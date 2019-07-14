@@ -14,7 +14,7 @@ void BlockModelManager::registerModel(std::uint16_t domain, std::uint16_t block,
                << "BlockId: " << (domain << 16 | block) << " (domain: " << domain << ", id: " << block << ").";
         throw std::runtime_error(buffer.str());
     }
-    mModels.insert(std::make_pair(domain << 16 | block, std::move(model)));
+    mModels.emplace(std::piecewise_construct, std::make_tuple(domain << 16 | block), std::forward_as_tuple(std::move(model)));
     debugstream << "Block model for block " << (domain << 16 | block) << "(domain: " << domain 
                 << ", id: " << block <<") was registered.";
 }

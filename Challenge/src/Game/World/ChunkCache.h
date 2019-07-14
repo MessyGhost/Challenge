@@ -10,7 +10,9 @@ class ChunkCache
 {
 public:
     struct ChunkPos {
-        bool operator<(const ChunkPos& lhs) const noexcept;
+        ChunkPos() noexcept;
+        ChunkPos(std::int32_t x, std::int32_t y, std::int32_t z) noexcept;
+        bool operator<(const ChunkPos& other) const noexcept;
         std::int32_t x, y, z;
     };
     ChunkCache() = default;
@@ -18,6 +20,7 @@ public:
     const Chunk& getChunk(const ChunkPos& chunkPos) const;
     Chunk& getChunk(const ChunkPos& chunkPos);
     const std::map<ChunkPos, Chunk>& getChunksReference() const noexcept;
+    bool contains(const ChunkPos& pos) const noexcept;
 private:
     std::map<ChunkPos, Chunk> mChunks;
 };

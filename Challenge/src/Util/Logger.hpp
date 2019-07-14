@@ -1,8 +1,10 @@
 #pragma once
 #include <ostream>
+#include <sstream>
 #include <iomanip>
 #include <string>
 #include <chrono>
+#include <mutex>
 #include "Noncopyable.h"
 #include "Nonmovable.h"
 
@@ -12,33 +14,37 @@ class Logger
 public:
     Logger(std::ostream& output, const std::string& level, bool enabled = true);
     class LoggerProxy 
-        :private Noncopyable, private Nonmovable
+        :private Noncopyable
     {
     public:
         LoggerProxy(Logger& logger) noexcept;
+        LoggerProxy(LoggerProxy&& rhs) noexcept;
         template <typename T>
         inline LoggerProxy& operator<<(const T& what) noexcept {
-            if(mLogger.mEnabled) {
-                mLogger.mOutput << what;
+            if(m_pLogger->mEnabled) {
+                m_pLogger->mBuffer << what;
             }
             return *this;
         }
+        ~LoggerProxy();
     private:
-        Logger& mLogger;
+        Logger* m_pLogger;
     };
     template <typename T>
-    inline LoggerProxy& operator<<(const T& what) noexcept {
+    inline LoggerProxy operator<<(const T& what) noexcept {
         if(mEnabled) {
             auto _now = std::chrono::system_clock::to_time_t(std::chrono::system_clock::now());
             auto* now = localtime(&_now);
-            mOutput << "\n[" << std::put_time(now, "%H:%M:%S") << "]"
-                    << '[' << mLevel << "] " << what << std::flush;
+            return std::move(LoggerProxy(*this) << "[" << std::put_time(now, "%H:%M:%S") << "]"
+                    << '[' << mLevel << "] " << what);
         }
-        return mProxy;
+        return LoggerProxy(*this);
     }
+    void flush();
 private:
+    std::mutex mMutex;
     std::ostream& mOutput;
     std::string mLevel;
-    LoggerProxy mProxy;
+    std::ostringstream mBuffer;
     const bool mEnabled;
 };

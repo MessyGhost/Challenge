@@ -54,6 +54,11 @@ void Chunk::setBlock(const Chunk::BlockPos& pos, std::uint32_t block) {
 Chunk::State Chunk::getState() const noexcept {
     return mState;
 }
+
 void Chunk::setState(Chunk::State state) noexcept {
     mState = state;
+}
+
+const std::chrono::time_point<std::chrono::system_clock>& Chunk::getLastWriting() const noexcept {
+    return mLastWriting;
 }

@@ -21,7 +21,7 @@ std::uint32_t BlockManager::registerBlock(std::uint16_t domain, const Block& blo
         throw std::invalid_argument(buffer.str());
     }
     std::uint32_t blockId;
-    pBlocks->push_back(block);
+    pBlocks->emplace_back(block);
     blockId = pBlocks->size();
     if(blockId > INT16_MAX) {
         pBlocks->pop_back();
@@ -45,7 +45,7 @@ std::uint32_t BlockManager::registerBlock(std::uint16_t domain, Block&& block) {
         throw std::invalid_argument(buffer.str());
     }
     std::uint32_t blockId;
-    pBlocks->push_back(block);
+    pBlocks->emplace_back(block);
     blockId = pBlocks->size();
     if(blockId > INT16_MAX) {
         pBlocks->pop_back();
@@ -65,7 +65,7 @@ std::uint16_t BlockManager::genUnusedDomain() {
     if(mBlocks.size() == INT16_MAX) {
         throw std::overflow_error("No more unused domain can be generated.");
     }
-    mBlocks.push_back(std::vector<Block>());
+    mBlocks.emplace_back(std::vector<Block>());
     debugstream << "New block domain(id: " << mBlocks.size() - 1 << ") was generated.";
     return mBlocks.size() - 1;
 }

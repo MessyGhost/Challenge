@@ -7,3 +7,4 @@ libraries
 .vscode
 .vs
 Challenge/build
+*.lnk
