@@ -22,7 +22,7 @@ void GameResource::load(GameResource::Side side) {
         for(auto& provider : mProviders) {
             provider->provideBlockModels(
                 [&](const std::string& filename) {
-                    std::uint32_t result = t2db.append(Image::fromFile("resource/image/" + filename));
+                    std::uint32_t result = t2db.append(Image::fromFile("resources/image/" + filename));
                     return result;
                 },
                 [&](std::uint32_t id, std::unique_ptr<BlockModel>&& model) {
@@ -47,7 +47,7 @@ const GameResource::CommonResource& GameResource::getCommonResource() const noex
 
 const GameResource::ClientResource& GameResource::getClientResource() const {
     if(!mClientResource) {
-        throw std::runtime_error("No client resource has been initialized but now getClientResource() was called.");
+        throw std::runtime_error("No client resources has been initialized but now getClientResource() was called.");
     }
     return *mClientResource;
 }
