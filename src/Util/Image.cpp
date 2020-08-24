@@ -1,5 +1,5 @@
 #include "Image.h"
-#include <SOIL.h>
+#include <stb_image.h>
 #include <stdexcept>
 
 Image::~Image() {
@@ -34,12 +34,12 @@ const std::uint8_t* Image::data() const noexcept {
 Image Image::fromFile(const std::string& filename) {
     std::int32_t width, height, channels;
     std::uint8_t 
-        *pixels = SOIL_load_image(filename.c_str(), &width, &height, &channels, SOIL_LOAD_RGBA);
+        *pixels = stbi_load(filename.c_str(), &width, &height, &channels, STBI_rgb_alpha);
     if(!pixels) {
         throw std::runtime_error(std::string("Cannot load image from file.\nFilename: ") + filename.c_str());
     }
     return Image(width, height, pixels, 
         [](std::uint8_t *data) {
-            SOIL_free_image_data(data);
+            stbi_image_free(data);
         });
 }

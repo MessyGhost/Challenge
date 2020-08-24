@@ -2,8 +2,7 @@
 #include "Util/LoggerDefinition.h"
 #include <stdexcept>
 #include <GL/glew.h>
-#include <SDL_net.h>
-#include <glm/gtc/constants.hpp>
+#include <glm/gtx/constants.hpp>
 
 Interface& Interface::getInterface() {
     static Interface instance;
@@ -80,9 +79,6 @@ Interface::Interface()
 
     if (SDL_Init(SDL_INIT_EVERYTHING) != 0) {
         throw std::runtime_error("Cannot init SDL.");
-    }
-    else if (SDLNet_Init() != 0) {
-        throw std::runtime_error("Cannot init SDLNet");
     }
 
     mWindow = SDL_CreateWindow("Challenge", SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED, 

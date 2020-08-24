@@ -1,10 +1,4 @@
-﻿binaries
-includes
-libraries
-*.ilk
-*.obj
-*.pdb
-.vscode
-.vs
-Challenge/build
-*.lnk
+﻿.vscode/
+build/
+3rd-parties/includes/*
+3rd-parties/libraries/*

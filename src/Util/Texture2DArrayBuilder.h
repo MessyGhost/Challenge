@@ -1,5 +1,5 @@
 #pragma once
-#include "../Graphic/Texture.h"
+#include "../Graphics/Texture.h"
 #include "Noncopyable.h"
 #include "Nonmovable.h"
 #include <vector>

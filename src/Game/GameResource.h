@@ -4,7 +4,7 @@
 #include "GameContentProvider.h"
 #include "Client/BlockModelManager.h"
 #include "BlockManager.h"
-#include "../Graphic/Texture.h"
+#include "../Graphics/Texture.h"
 #include <list>
 #include <memory>
 

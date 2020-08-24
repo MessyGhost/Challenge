@@ -1,11 +1,12 @@
 #include "Game.h"
 #include "../Interface.h"
-#include "../Graphic/ShaderProgram.h"
-#include "../Graphic/Framebuffer.h"
+#include "../Graphics/ShaderProgram.h"
+#include "../Graphics/Framebuffer.h"
 #include "../Util/LoggerDefinition.h"
 #include "Client/Renderer/WorldRenderer.h"
 #include "World/World.h"
 #include <iostream>
+#include <glm/gtx/constants.hpp>
 #include <glm/gtc/matrix_transform.hpp>
 
 Game::Game(const GameResource& gamerc) noexcept 
@@ -35,7 +36,7 @@ void Game::run() {
 
     glm::dvec3 playerPosition(0.0, 0.0, 0.0);
     glm::dvec2 playerRotation(0.0, 0.0);
-    s.setUniform("ProjectionMatrix", glm::perspective(glm::radians(45.0f), 800.0f / 600.0f, 0.1f, 100.0f));
+    s.setUniform("ProjectionMatrix", glm::perspective(glm::radians(75.0f), 800.0f / 600.0f, 0.1f, 100.0f));
 
     std::chrono::time_point<std::chrono::system_clock> start = std::chrono::system_clock::now();
     double delta;
@@ -64,11 +65,11 @@ void Game::run() {
         interface.swapWindow();
 
         /*Update */
-        auto rotationDelta = interface.getRotationDelta();
+        auto rotationDelta = interface.getRotationDelta() / (glm::pi<double>() * 2.0);
         playerRotation += glm::radians(rotationDelta);
         playerRotation.y += 
-            playerRotation.y > glm::two_pi<double>() ? -glm::pi<double>() :
-            playerRotation.y < 0.0 ? glm::two_pi<double>() : 0.0;
+            playerRotation.y > 2.0 * glm::pi<double>() ? -glm::pi<double>() :
+            playerRotation.y < 0.0 ? 2.0 * glm::pi<double>() : 0.0;
         playerRotation.x = 
             playerRotation.x > glm::half_pi<double>() ? glm::half_pi<double>() :
             playerRotation.x < -glm::half_pi<double>() ? -glm::half_pi<double>() : playerRotation.x;

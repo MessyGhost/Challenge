@@ -1,11 +1,14 @@
+#define STB_IMAGE_IMPLEMENTATION
 #include <iostream>
 #include <chrono>
 #include <thread>
+#include <stb_image.h>
 #include "Game/Game.h"
 #include "Game/GameResource.h"
 #include "MagiCraft.h"
 #include "Util/LoggerDefinition.h"
 #include "Interface.h"
+
 
 int main(int argc, char** argv){
     try {
