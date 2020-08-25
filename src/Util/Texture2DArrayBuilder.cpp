@@ -5,7 +5,7 @@
 #include <stdexcept>
 
 gl::Texture Texture2DArrayBuilder::build(std::uint32_t width, std::uint32_t height) const {
-    gl::Texture result(gl::TextureBindingTarget::Texture2DArray, width, height, mImages.size());
+    gl::Texture result(gl::TextureBindingTarget::Texture2DArray, width, height, (std::uint32_t)mImages.size());
     int i = 0;
     for (const Image& image : mImages) {
         if (image.width() != width && image.height() != height) {
@@ -22,7 +22,7 @@ gl::Texture Texture2DArrayBuilder::build(std::uint32_t width, std::uint32_t heig
 }
 
 std::uint32_t Texture2DArrayBuilder::append(Image&& image) noexcept {
-    std::uint32_t result = mImages.size();
+    std::uint32_t result = (std::uint32_t)mImages.size();
     mImages.emplace_back(std::move(image));
     return result;
 }
@@ -31,9 +31,9 @@ Image Texture2DArrayBuilder::scaleImage(const Image& image, std::uint32_t w, std
     std::uint8_t* resultData = new std::uint8_t[w * h * 4];
 
     for (std::uint32_t dstY = 0; dstY < h; ++dstY){
-        std::uint32_t srcY = std::floor((dstY + 0.5f) / h * image.height());
+        std::uint32_t srcY = (std::uint32_t)(std::floor((dstY + 0.5f) / h * image.height()));
         for (std::uint32_t dstX = 0; dstX < w; ++dstX) {
-            std::uint32_t srcX = std::floor((dstX + 0.5f) / w * image.width());
+            std::uint32_t srcX = (std::uint32_t)(std::floor((dstX + 0.5f) / w * image.width()));
             for (int i = 0; i < 4; ++i) {
                 resultData[(dstY * w + dstX) * 4 + i] = image.data()[(srcY * image.width() + srcX) * 4 + i];
             }

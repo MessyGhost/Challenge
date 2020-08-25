@@ -4,9 +4,9 @@
 void World::setblock(std::int64_t x, std::int64_t y, std::int64_t z, std::uint32_t block) {
     //Chunk pos
     std::int32_t 
-        cx = std::floor(x / (double)Chunk::CHUNK_SIZE),
-        cy = std::floor(y / (double)Chunk::CHUNK_SIZE),
-        cz = std::floor(z / (double)Chunk::CHUNK_SIZE);
+        cx = (std::int32_t)std::floor(x / (double)Chunk::CHUNK_SIZE),
+        cy = (std::int32_t)std::floor(y / (double)Chunk::CHUNK_SIZE),
+        cz = (std::int32_t)std::floor(z / (double)Chunk::CHUNK_SIZE);
     //Pos in chunk
     std::uint8_t 
         xInC = x % Chunk::CHUNK_SIZE,

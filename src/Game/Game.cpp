@@ -1,7 +1,7 @@
 #include "Game.h"
 #include "../Interface.h"
-#include "../Graphics/ShaderProgram.h"
-#include "../Graphics/Framebuffer.h"
+#include "Client/Graphics/ShaderProgram.h"
+#include "Client/Graphics/Framebuffer.h"
 #include "../Util/LoggerDefinition.h"
 #include "Client/Renderer/WorldRenderer.h"
 #include "World/World.h"
@@ -15,7 +15,7 @@ Game::Game(const GameResource& gamerc) noexcept
 }
 
 void Game::run() {
-    infostream << "Game::run() was called, an client will be launched soon...";
+    infostream << "Game::run() was called, a client will be launched soon...";
     auto &interface = Interface::getInterface();
     interface.present();
     interface.setMouseVisible(false);
@@ -24,7 +24,7 @@ void Game::run() {
     float clearColor[] = {0.1f, 0.2f, 0.3f, 1.0f};
     float clearDepth = 1.0f;
 
-    gl::ShaderProgram s = gl::loadShaderProgramFromFile("resource/shader/block.vert", "resource/shader/block.frag");
+    gl::ShaderProgram s = gl::loadShaderProgramFromFile("resources/shader/block.vert", "resources/shader/block.frag");
     Interface::MoveIntent moveIntent;
 
     World world;
@@ -34,7 +34,7 @@ void Game::run() {
     
     WorldRenderer wr(world.getChunkCache(), mGameResource.getClientResource().mBlockModelManager, s);
 
-    glm::dvec3 playerPosition(0.0, 0.0, 0.0);
+    glm::dvec3 playerPosition(0.0, 48.0, 0.0);
     glm::dvec2 playerRotation(0.0, 0.0);
     s.setUniform("ProjectionMatrix", glm::perspective(glm::radians(75.0f), 800.0f / 600.0f, 0.1f, 100.0f));
 
@@ -65,7 +65,7 @@ void Game::run() {
         interface.swapWindow();
 
         /*Update */
-        auto rotationDelta = interface.getRotationDelta() / (glm::pi<double>() * 2.0);
+        auto rotationDelta = interface.getRotationDelta();
         playerRotation += glm::radians(rotationDelta);
         playerRotation.y += 
             playerRotation.y > 2.0 * glm::pi<double>() ? -glm::pi<double>() :

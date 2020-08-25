@@ -151,9 +151,9 @@ void WorldRenderer::render(glm::dvec3 center, std::uint8_t radiusDistance) {
                 mMeshes.erase(data.chunkPos);
                 throw std::out_of_range("");
             }
-            mesh.modelBuffer.subData(data.models.size() * BlockModel::VertexFormat::Size, data.models.data());
-            mesh.positionBuffer.subData(data.positionsInChunk.size() * sizeof(MeshData::Position), data.positionsInChunk.data());
-            mesh.numVertices = data.models.size();
+            mesh.modelBuffer.subData((std::uint32_t)data.models.size() * BlockModel::VertexFormat::Size, data.models.data());
+            mesh.positionBuffer.subData((std::uint32_t)data.positionsInChunk.size() * sizeof(MeshData::Position), data.positionsInChunk.data());
+            mesh.numVertices = (std::uint32_t)data.models.size();
             mesh.lastChange = std::chrono::system_clock::now();
         }
         catch(std::out_of_range&) {
@@ -161,8 +161,8 @@ void WorldRenderer::render(glm::dvec3 center, std::uint8_t radiusDistance) {
                 std::piecewise_construct,
                 std::make_tuple(data.chunkPos),
                 std::make_tuple(genUnusedChunkMesh(
-                    data.models.size() * BlockModel::VertexFormat::Size, data.models.data(),
-                    data.positionsInChunk.size() * sizeof(MeshData::Position), data.positionsInChunk.data(),
+                    (std::uint32_t)data.models.size() * BlockModel::VertexFormat::Size, data.models.data(),
+                    (std::uint32_t)data.positionsInChunk.size() * sizeof(MeshData::Position), data.positionsInChunk.data(),
                     (std::uint32_t)data.models.size())));
         }
     }

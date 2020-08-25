@@ -1,6 +1,6 @@
 #pragma once
 #include "OpenGL.hpp"
-#include "../Util/Noncopyable.h"
+#include "../../../Util/Noncopyable.h"
 #include <cstdint>
 
 namespace gl {

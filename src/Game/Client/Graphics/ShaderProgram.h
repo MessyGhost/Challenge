@@ -2,8 +2,8 @@
 #include <glm/glm.hpp>
 #include <string>
 #include <cstdint>
-#include "../Util/Noncopyable.h"
-#include "../Util/Nonmovable.h"
+#include "../../../Util/Noncopyable.h"
+#include "../../../Util/Nonmovable.h"
 
 namespace gl {
     class ShaderProgram

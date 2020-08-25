@@ -9,7 +9,7 @@ BlockManager::BlockManager()
 
 }
 
-std::uint32_t BlockManager::registerBlock(std::uint16_t domain, const Block& block) {
+BlockManager::blockstorageid_t BlockManager::registerBlock(std::uint16_t domain, const Block& block) {
     std::vector<Block>* pBlocks = nullptr;
     try {
         pBlocks = &mBlocks.at(domain);
@@ -20,10 +20,10 @@ std::uint32_t BlockManager::registerBlock(std::uint16_t domain, const Block& blo
         buffer << "Domain not found: " << domain << ".";
         throw std::invalid_argument(buffer.str());
     }
-    std::uint32_t blockId;
+    blockstorageid_t blockId;
     pBlocks->emplace_back(block);
-    blockId = pBlocks->size();
-    if(blockId > INT16_MAX) {
+    blockId = (blockstorageid_t)pBlocks->size();
+    if(blockId > BLOCKID_TYPE_MAX) {
         pBlocks->pop_back();
         std::stringstream buffer;
         buffer << "Too many blocks are registered in a same domain: " << domain << ".";
@@ -33,7 +33,7 @@ std::uint32_t BlockManager::registerBlock(std::uint16_t domain, const Block& blo
     return domain << 16 | blockId;
 }
 
-std::uint32_t BlockManager::registerBlock(std::uint16_t domain, Block&& block) {
+BlockManager::blockstorageid_t BlockManager::registerBlock(BlockManager::domainid_t domain, Block&& block) {
     std::vector<Block>* pBlocks = nullptr;
     try {
         pBlocks = &mBlocks.at(domain);
@@ -44,10 +44,10 @@ std::uint32_t BlockManager::registerBlock(std::uint16_t domain, Block&& block) {
         buffer << "Domain not found: " << domain << ".";
         throw std::invalid_argument(buffer.str());
     }
-    std::uint32_t blockId;
+    blockstorageid_t blockId;
     pBlocks->emplace_back(block);
-    blockId = pBlocks->size();
-    if(blockId > INT16_MAX) {
+    blockId = (blockstorageid_t)pBlocks->size();
+    if(blockId > BLOCKID_TYPE_MAX) {
         pBlocks->pop_back();
         std::stringstream buffer;
         buffer << "Too many blocks are registered in a same domain: " << domain << ".";
@@ -57,17 +57,17 @@ std::uint32_t BlockManager::registerBlock(std::uint16_t domain, Block&& block) {
     return domain << 16 | blockId;
 }
 
-const Block& BlockManager::getBlockById(std::uint32_t id) const {
+const Block& BlockManager::getBlockById(BlockManager::blockstorageid_t id) const {
     return mBlocks.at(id >> 16).at(id & 0xffff);
 }
 
-std::uint16_t BlockManager::genUnusedDomain() {
-    if(mBlocks.size() == INT16_MAX) {
+BlockManager::domainid_t BlockManager::genUnusedDomain() {
+    if(mBlocks.size() == DOMAINID_TYPE_MAX) {
         throw std::overflow_error("No more unused domain can be generated.");
     }
     mBlocks.emplace_back(std::vector<Block>());
     debugstream << "New block domain(id: " << mBlocks.size() - 1 << ") was generated.";
-    return mBlocks.size() - 1;
+    return (domainid_t)(mBlocks.size() - 1);
 }
 
 Block BlockManager::genBlock() noexcept {

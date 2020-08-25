@@ -3,8 +3,8 @@
 #include "../BlockModelManager.h"
 #include "../../../Util/Noncopyable.h"
 #include "../../../Util/Nonmovable.h"
-#include "../../../Graphics/VertexArray.h"
-#include "../../../Graphics/ShaderProgram.h"
+#include "../Graphics/VertexArray.h"
+#include "../Graphics/ShaderProgram.h"
 #include <glm/glm.hpp>
 #include <map>
 #include <list>
